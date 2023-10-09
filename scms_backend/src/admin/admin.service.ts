@@ -8,18 +8,18 @@ export class AdminService {
   }
   addProducer(producerInfo: ProducerInfo): object {
     return {
-        id: producerInfo.id,
-        name: producerInfo.name,
-        email: producerInfo.email
-    }
+      id: producerInfo.id,
+      name: producerInfo.name,
+      email: producerInfo.email,
+    };
   }
-  searchProducer(name:string, id:number): string {
-    return `userid: ${id}\nusername: ${name}`;
+  searchProducer(name: string, id: number): object {
+    return { userid: id, nusername: name };
   }
   updateProducer(id): string {
-    return `User id ${id} updated`
+    return `User id ${id} updated`;
   }
   deleteProducer(id): string {
-    return `User id ${id} Deleted`
+    return `User id ${id} Deleted`;
   }
 }

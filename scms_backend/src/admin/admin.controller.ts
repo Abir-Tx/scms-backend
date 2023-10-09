@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Query, Put, Delete, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Query,
+  Put,
+  Delete,
+  Param,
+} from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { ProducerInfo } from './producer.dto';
 
@@ -11,20 +20,21 @@ export class AdminController {
     return this.adminService.getHello();
   }
   @Post('producer')
-  addProducer(@Body() producerInfo: ProducerInfo): object{
-    return this.adminService.addProducer(producerInfo)
+  addProducer(@Body() producerInfo: ProducerInfo): object {
+    return this.adminService.addProducer(producerInfo);
   }
   @Get('searchproducer')
-  searchProducer(@Query('name') name:string, @Query('id') id:number):string{
+  searchProducer(@Query('name') name: string, @Query('id') id: number): object {
     return this.adminService.searchProducer(name, id);
   }
   @Put('producer/:id')
-  updateProducer(@Param('id') id:number):string{
+  updateProducer(@Param('id') id: number): string {
     return this.adminService.updateProducer(id);
   }
   @Delete('producer/:id')
-  deleteProducer(@Param('id') id:number):string{
+  deleteProducer(@Param('id') id: number): string {
     return this.adminService.deleteProducer(id);
   }
-//   @Delete('')
+
+  //   @Delete('')
 }
