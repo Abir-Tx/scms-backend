@@ -1,3 +1,4 @@
+// Logistics Manager controller
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { LogisticsService } from './logistics.service';
 
