@@ -18,4 +18,9 @@ export class LogisticsService {
     // Logic to retrieve the list of available transportation options
     return 'Hello LM';
   }
+
+  getDrivers() {
+    // Logic to retrieve the list of available drivers
+    return 'Drivers';
+  }
 }

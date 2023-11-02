@@ -39,6 +39,13 @@ export class LogisticsController {
     return drivers;
   }
 
+  @Get('drivers/:id')
+  getDriver(@Param('id') id: string) {
+    const driver = this.driverService.findById(parseInt(id)); // Assuming you have a findById method
+
+    return driver;
+  }
+
   @Post('drivers')
   async addDriver(@Body() driverData) {
     // Call the DriverService method to create a new driver
