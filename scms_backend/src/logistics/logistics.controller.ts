@@ -1,7 +1,17 @@
 // Logistics Manager controller
-import { Controller, Get, Post, Body, Param, Delete, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Res,
+  Put,
+} from '@nestjs/common';
 import { LogisticsService } from './logistics.service';
 import { DriverService } from './services/driver.service';
+import { Driver } from './entities/driver.entity';
 
 @Controller('logistics')
 export class LogisticsController {
@@ -46,6 +56,19 @@ export class LogisticsController {
       response
         .status(500)
         .json({ message: error.message || 'Something went wrong' });
+    }
+  }
+
+  @Put('drivers/:id')
+  updateDriver(@Param('id') id: string, @Body() updatedDriverData: Driver) {
+    try {
+      const updatedDriver = this.driverService.update(
+        parseInt(id),
+        updatedDriverData,
+      );
+      return updatedDriver;
+    } catch (error) {
+      return error; // You can return the error response here
     }
   }
 }
