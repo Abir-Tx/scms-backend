@@ -28,4 +28,11 @@ export class LogisticsController {
 
     return drivers;
   }
+
+  @Post('drivers')
+  async addDriver(@Body() driverData) {
+    // Call the DriverService method to create a new driver
+    const newDriver = await this.driverService.create(driverData); // Assuming you have a create method in your DriverService
+    return newDriver;
+  }
 }
