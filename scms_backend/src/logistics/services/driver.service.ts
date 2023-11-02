@@ -15,9 +15,11 @@ export class DriverService {
     return this.driverRepository.find();
   }
 
-  /*   async findById(id: number): Promise<Driver> {
-    return this.driverRepository.findOne(id); // Pass 'id' as the argument
-} */
+  async findById(id: number): Promise<Driver> {
+    return this.driverRepository.findOne({
+      where: { id: id },
+    });
+  }
 
   async create(driver: Driver): Promise<Driver> {
     return this.driverRepository.save(driver);
