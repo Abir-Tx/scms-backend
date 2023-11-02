@@ -45,6 +45,18 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Configuring the database
+
+A `.env` file in the root has to be created with the following variables:
+
+```bash
+PG_HOST=WRITE_HERE
+PG_PORT=WRITE_HERE
+PG_USER=WRITE_HERE
+PG_PASSWORD=WRITE_HERE
+PG_DATABASE=WRITE_HERE
+```
+
 ## Test
 
 ```bash
