@@ -25,11 +25,6 @@ export class DriverService {
     return this.driverRepository.save(driver);
   }
 
-  /*   async update(id: number, driver: Driver): Promise<Driver> {
-    await this.driverRepository.update(id, driver);
-    return this.driverRepository.findOne(id);
-  } */
-
   async remove(id: number): Promise<void> {
     const result = await this.driverRepository.delete(id);
     if (result.affected === 0) {
