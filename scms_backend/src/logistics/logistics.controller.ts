@@ -8,6 +8,7 @@ import {
   Delete,
   Res,
   Put,
+  Query,
 } from '@nestjs/common';
 import { LogisticsService } from './logistics.service';
 import { DriverService } from './services/driver.service';
@@ -41,6 +42,26 @@ export class LogisticsController {
   @Get('drivers/:id')
   getDriver(@Param('id') id: string) {
     const driver = this.driverService.findById(parseInt(id));
+
+    return driver;
+  }
+
+  @Get('drivers/name/:name')
+  getDriverByName(
+    @Param('name') name: string,
+    @Query('isCaseSensitive') isCaseSensitive: string,
+  ) {
+    let shouldPerformCaseSensitiveSearch: boolean = false;
+    if (isCaseSensitive === 'true') {
+      shouldPerformCaseSensitiveSearch = true;
+    } else {
+      shouldPerformCaseSensitiveSearch = false;
+    }
+
+    const driver = this.driverService.findByName(
+      name,
+      shouldPerformCaseSensitiveSearch,
+    );
 
     return driver;
   }

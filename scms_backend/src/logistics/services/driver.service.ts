@@ -21,6 +21,20 @@ export class DriverService {
     });
   }
 
+  // Find driver by name
+  async findByName(name: string, caseSensitive = false): Promise<Driver> {
+    if (caseSensitive) {
+      return this.driverRepository.findOne({
+        where: { name: name },
+      });
+    } else {
+      return this.driverRepository
+        .createQueryBuilder('driver')
+        .where('LOWER(driver.name) = LOWER(:name)', { name: name })
+        .getOne();
+    }
+  }
+
   async create(driver: Driver): Promise<Driver> {
     return this.driverRepository.save(driver);
   }
