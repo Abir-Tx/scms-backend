@@ -20,15 +20,9 @@ export class LogisticsController {
     private readonly driverService: DriverService,
     private readonly logisticsService: LogisticsService,
   ) {}
-  // GET Transports
-  @Post()
-  createTransportRequest(@Body() requestData) {
-    return this.logisticsService.createTransportRequest(requestData);
-  }
-
   @Get()
-  getAvailableTransportOptions() {
-    return this.logisticsService.getAvailableTransportOptions();
+  getWelcome() {
+    return this.logisticsService.welcome();
   }
 
   // Drivers
