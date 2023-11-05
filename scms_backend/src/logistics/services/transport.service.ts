@@ -27,13 +27,15 @@ export class TransportService {
     return transports;
   }
 
-  /*   async getTransportById(id: number): Promise<Transport> {
-    const transport = await this.transportRepository.findOne(id);
+  async getTransportById(id: number): Promise<Transport> {
+    const transport = await this.transportRepository.findOne({
+      where: { id: id },
+    });
     if (!transport) {
       throw new HttpException('Transport not found', HttpStatus.NOT_FOUND);
     }
     return transport;
-  } */
+  }
 
   /*   async updateTransport(
     id: number,
