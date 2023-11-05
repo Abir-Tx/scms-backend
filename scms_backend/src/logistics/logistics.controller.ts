@@ -105,4 +105,10 @@ export class LogisticsController {
       await this.transportService.createTransport(transportData);
     return newTransport;
   }
+
+  // Get a transport by ID
+  @Get('transports/:id')
+  getTransportById(@Param('id') id: string) {
+    return this.transportService.getTransportById(parseInt(id));
+  }
 }
