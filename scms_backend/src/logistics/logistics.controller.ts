@@ -110,6 +110,18 @@ export class LogisticsController {
     return this.driverService.getAssignedTransports(parseInt(id));
   }
 
+  // An API route to assign a transport to a driver
+  @Post('drivers/:driverId/transports/:transportId')
+  assignTransportToDriver(
+    @Param('driverId') driverId: string,
+    @Param('transportId') transportId: string,
+  ) {
+    return this.driverService.assignTransport(
+      parseInt(driverId),
+      parseInt(transportId),
+    );
+  }
+
   // ---------------------------- Transports -----------------------------
   /**
    * This file implements the following API routes:
