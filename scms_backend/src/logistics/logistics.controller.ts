@@ -13,12 +13,14 @@ import {
 import { LogisticsService } from './logistics.service';
 import { DriverService } from './services/driver.service';
 import { Driver } from './entities/driver.entity';
+import { TransportService } from './services/transport.service';
 
 @Controller('logistics')
 export class LogisticsController {
   constructor(
     private readonly driverService: DriverService,
     private readonly logisticsService: LogisticsService,
+    private readonly transportService: TransportService,
   ) {}
   @Get()
   getWelcome() {
@@ -89,5 +91,18 @@ export class LogisticsController {
     } catch (error) {
       return error;
     }
+  }
+
+  // Transports
+  @Get('transports')
+  getTransports() {
+    return this.transportService.getAllTransports();
+  }
+
+  @Post('transports')
+  async addTransport(@Body() transportData) {
+    const newTransport =
+      await this.transportService.createTransport(transportData);
+    return newTransport;
   }
 }
