@@ -10,11 +10,11 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { LogisticsService } from './logistics.service';
-import { DriverService } from './services/driver.service';
-import { Driver } from './entities/driver.entity';
-import { TransportService } from './services/transport.service';
-import { Transport } from './entities/transport.entity';
+import { LogisticsService } from '../services/logistics.service';
+import { DriverService } from '../services/driver.service';
+import { Driver } from '../entities/driver.entity';
+import { TransportService } from '../services/transport.service';
+import { Transport } from '../entities/transport.entity';
 
 @Controller('logistics')
 export class LogisticsController {
