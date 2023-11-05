@@ -124,4 +124,17 @@ export class LogisticsController {
       updatedTransportData,
     );
   }
+
+  // Delete a transport
+  @Delete('transports/:id')
+  dleteTransport(@Param('id') id: string, @Res() response) {
+    try {
+      this.transportService.deleteTransport(parseInt(id));
+      response.status(200).json({ message: 'Transport successfully deleted' });
+    } catch (error) {
+      response
+        .status(500)
+        .json({ message: error.message || 'Something went wrong' });
+    }
+  }
 }
