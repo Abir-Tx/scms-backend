@@ -1,5 +1,11 @@
 // transport.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { Driver } from './driver.entity'; // Assuming you have a driver entity
 import { Shipment } from './shipment.entity';
 

@@ -14,6 +14,7 @@ import { LogisticsService } from './logistics.service';
 import { DriverService } from './services/driver.service';
 import { Driver } from './entities/driver.entity';
 import { TransportService } from './services/transport.service';
+import { Transport } from './entities/transport.entity';
 
 @Controller('logistics')
 export class LogisticsController {
@@ -110,5 +111,17 @@ export class LogisticsController {
   @Get('transports/:id')
   getTransportById(@Param('id') id: string) {
     return this.transportService.getTransportById(parseInt(id));
+  }
+
+  // Update a transport details
+  @Put('transports/:id')
+  updateTransport(
+    @Param('id') id: string,
+    @Body() updatedTransportData: Partial<Transport>,
+  ) {
+    return this.transportService.updateTransport(
+      parseInt(id),
+      updatedTransportData,
+    );
   }
 }
