@@ -37,32 +37,37 @@ export class TransportService {
     return transport;
   }
 
-  /*   async updateTransport(
+  async updateTransport(
     id: number,
     updatedTransportData: Partial<Transport>,
   ): Promise<Transport> {
-    const existingTransport = await this.transportRepository.findOne(id);
+    const existingTransport = await this.transportRepository.findOne({
+      where: { id: id },
+    });
 
     if (!existingTransport) {
       throw new HttpException('Transport not found', HttpStatus.NOT_FOUND);
     }
 
     // Update only the fields that are provided in updatedTransportData
-    if (updatedTransportData.name) {
-      existingTransport.name = updatedTransportData.name;
+    if (updatedTransportData.source) {
+      existingTransport.source = updatedTransportData.source;
     }
-    if (updatedTransportData.type) {
-      existingTransport.type = updatedTransportData.type;
+    if (updatedTransportData.destination) {
+      existingTransport.destination = updatedTransportData.destination;
     }
-    if (updatedTransportData.capacity) {
-      existingTransport.capacity = updatedTransportData.capacity;
+    if (updatedTransportData.status) {
+      existingTransport.status = updatedTransportData.status;
     }
-    // Add similar checks for other fields you want to update.
+
+    if (updatedTransportData.driver) {
+      existingTransport.driver = updatedTransportData.driver;
+    }
 
     const updatedTransport =
       await this.transportRepository.save(existingTransport);
     return updatedTransport;
-  } */
+  }
 
   async deleteTransport(id: number): Promise<void> {
     const result = await this.transportRepository.delete(id);
