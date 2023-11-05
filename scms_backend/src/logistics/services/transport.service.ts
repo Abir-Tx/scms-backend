@@ -49,7 +49,6 @@ export class TransportService {
       throw new HttpException('Transport not found', HttpStatus.NOT_FOUND);
     }
 
-    // Update only the fields that are provided in updatedTransportData
     if (updatedTransportData.source) {
       existingTransport.source = updatedTransportData.source;
     }
@@ -69,6 +68,7 @@ export class TransportService {
     return updatedTransport;
   }
 
+  // Delete a transport service
   async deleteTransport(id: number): Promise<void> {
     const result = await this.transportRepository.delete(id);
     if (result.affected === 0) {

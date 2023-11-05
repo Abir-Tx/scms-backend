@@ -93,4 +93,25 @@ export class DriverService {
 
     return updatedDriver;
   }
+
+  // Get assigned transports for a driver
+  async getAssignedTransports(id: number): Promise<Driver> {
+    const driver = await this.driverRepository.findOne({
+      where: { id: id },
+      relations: ['transports'],
+    });
+
+    if (!driver) {
+      throw new HttpException('Driver not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (driver.transports.length === 0) {
+      throw new HttpException(
+        'No transports are assigned to this driver',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return driver;
+  }
 }

@@ -28,7 +28,18 @@ export class LogisticsController {
     return this.logisticsService.welcome();
   }
 
-  // Drivers
+  // -------------------------- Drivers --------------------------
+  /**
+   * This file implements the following API routes for drivers:
+   *
+   * GET /drivers/:id - Retrieves a driver by its ID
+   * GET /drivers/name/:name - Retrieves a driver by its name, with an optional case sensitivity flag
+   * POST /drivers - Adds a new driver
+   * DELETE /drivers/:id - Deletes a driver by its ID
+   * PUT /drivers/:id - Updates a driver by its ID
+   * GET /drivers/:id/transports - Retrieves all transports assigned to a driver by the driver's ID
+   */
+
   @Get('drivers')
   getDrivers() {
     const drivers = this.driverService.findAll();
@@ -94,7 +105,20 @@ export class LogisticsController {
     }
   }
 
-  // Transports
+  @Get('drivers/:id/transports')
+  getTransportsForDriver(@Param('id') id: string) {
+    return this.driverService.getAssignedTransports(parseInt(id));
+  }
+
+  // ---------------------------- Transports -----------------------------
+  /**
+   * This file implements the following API routes:
+   *
+   * GET /transports/:id - Retrieves a transport by its ID
+   * PUT /transports/:id - Updates a transport by its ID
+   * DELETE /transports/:id - Deletes a transport by its ID
+   */
+
   @Get('transports')
   getTransports() {
     return this.transportService.getAllTransports();
