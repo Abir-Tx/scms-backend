@@ -122,6 +122,18 @@ export class LogisticsController {
     );
   }
 
+  // An API route to unassign a transport from a driver
+  @Delete('drivers/:driverId/transports/:transportId')
+  unassignTransportFromDriver(
+    @Param('driverId') driverId: string,
+    @Param('transportId') transportId: string,
+  ) {
+    return this.driverService.unassignTransport(
+      parseInt(driverId),
+      parseInt(transportId),
+    );
+  }
+
   // ---------------------------- Transports -----------------------------
   /**
    * This file implements the following API routes:
