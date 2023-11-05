@@ -145,4 +145,34 @@ export class DriverService {
 
     return driver;
   }
+
+  // Unassign a transport from a driver
+  async unassignTransport(
+    driverId: number,
+    transportId: number,
+  ): Promise<Driver> {
+    const driver = await this.driverRepository.findOne({
+      where: { id: driverId },
+      relations: ['transports'],
+    });
+
+    if (!driver) {
+      throw new HttpException('Driver not found', HttpStatus.NOT_FOUND);
+    }
+
+    const transport = await this.transportRepository.findOne({
+      where: { id: transportId },
+    });
+
+    if (!transport) {
+      throw new HttpException('Transport not found', HttpStatus.NOT_FOUND);
+    }
+
+    driver.transports = driver.transports.filter(
+      (transport) => transport.id !== transportId,
+    );
+    await this.driverRepository.save(driver);
+
+    return driver;
+  }
 }
