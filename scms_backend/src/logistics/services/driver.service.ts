@@ -3,12 +3,15 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Driver } from '../entities/driver.entity';
+import { Transport } from '../entities/transport.entity';
 
 @Injectable()
 export class DriverService {
   constructor(
     @InjectRepository(Driver)
     private driverRepository: Repository<Driver>,
+    @InjectRepository(Transport)
+    private readonly transportRepository: Repository<Transport>,
   ) {}
 
   async findAll(): Promise<Driver[]> {
@@ -111,6 +114,34 @@ export class DriverService {
         HttpStatus.NOT_FOUND,
       );
     }
+
+    return driver;
+  }
+
+  // Assign a transport to a driver
+  async assignTransport(
+    driverId: number,
+    transportId: number,
+  ): Promise<Driver> {
+    const driver = await this.driverRepository.findOne({
+      where: { id: driverId },
+      relations: ['transports'],
+    });
+
+    if (!driver) {
+      throw new HttpException('Driver not found', HttpStatus.NOT_FOUND);
+    }
+
+    const transport = await this.transportRepository.findOne({
+      where: { id: transportId },
+    });
+
+    if (!transport) {
+      throw new HttpException('Transport not found', HttpStatus.NOT_FOUND);
+    }
+
+    driver.transports.push(transport);
+    await this.driverRepository.save(driver);
 
     return driver;
   }
