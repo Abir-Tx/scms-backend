@@ -6,9 +6,11 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "pgadmin:up": "docker compose up pgadmin",
+    "pgadmin:rm": "docker compose rm pgadmin -s -f -v",
     "db:dev:rm": "docker compose rm dev-db -s -f -v",
     "db:dev:up": "docker compose up dev-db -d",
-    "db:dev:restart": "npm run db:dev:rm && npm run db:dev:up && sleep 1",
+    "db:dev:restart": "npm run db:dev:rm && npm run db:dev:up && sleep 1 && npm run  pgadmin:rm && npm run pgadmin:up",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",

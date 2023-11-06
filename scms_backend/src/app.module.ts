@@ -17,8 +17,8 @@ import { TypeormModule } from './typeorm/typeorm.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       port: 5434,
-      username: 'postgres',
-      password: 'proGRAMMER6996!@#',
+      username: 'admin',
+      password: 'postgres',
       database: 'scms',
       autoLoadEntities: true,
       synchronize: true,
