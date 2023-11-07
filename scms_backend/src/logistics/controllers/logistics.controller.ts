@@ -9,12 +9,15 @@ import {
   Res,
   Put,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { LogisticsService } from '../services/logistics.service';
 import { DriverService } from '../services/driver.service';
 import { Driver } from '../entities/driver.entity';
 import { TransportService } from '../services/transport.service';
 import { Transport } from '../entities/transport.entity';
+import { CreateDriverDto } from '../DTOs/driver.dto';
 
 @Controller('logistics')
 export class LogisticsController {
@@ -75,8 +78,9 @@ export class LogisticsController {
   }
 
   @Post('drivers')
-  async addDriver(@Body() driverData) {
-    const newDriver = await this.driverService.create(driverData);
+  @UsePipes(new ValidationPipe())
+  async addDriver(@Body() driverDto: CreateDriverDto) {
+    const newDriver = await this.driverService.create(driverDto);
     return newDriver;
   }
 
