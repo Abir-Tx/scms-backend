@@ -18,6 +18,7 @@ import { Driver } from '../entities/driver.entity';
 import { TransportService } from '../services/transport.service';
 import { Transport } from '../entities/transport.entity';
 import { CreateDriverDto } from '../DTOs/driver.dto';
+import { ShipmentService } from '../services/shipment.service';
 
 @Controller('logistics')
 export class LogisticsController {
@@ -25,6 +26,7 @@ export class LogisticsController {
     private readonly driverService: DriverService,
     private readonly logisticsService: LogisticsService,
     private readonly transportService: TransportService,
+    private readonly sv: ShipmentService,
   ) {}
   @Get()
   getWelcome() {
@@ -179,7 +181,7 @@ export class LogisticsController {
 
   // Delete a transport
   @Delete('transports/:id')
-  dleteTransport(@Param('id') id: string, @Res() response) {
+  deleteTransport(@Param('id') id: string, @Res() response) {
     try {
       this.transportService.deleteTransport(parseInt(id));
       response.status(200).json({ message: 'Transport successfully deleted' });
@@ -188,5 +190,13 @@ export class LogisticsController {
         .status(500)
         .json({ message: error.message || 'Something went wrong' });
     }
+  }
+
+  // ---------------------------- Shipments -----------------------------
+
+  // Get All Shipments
+  @Get('shipments')
+  getAllShipments() {
+    return this.sv.findAllShipments();
   }
 }
