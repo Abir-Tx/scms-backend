@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Driver } from '../entities/driver.entity';
 import { Transport } from '../entities/transport.entity';
+import { CreateDriverDto } from '../DTOs/driver.dto';
 
 @Injectable()
 export class DriverService {
@@ -38,8 +39,8 @@ export class DriverService {
     }
   }
 
-  async create(driver: Driver): Promise<Driver> {
-    return this.driverRepository.save(driver);
+  async create(createDriverDto: CreateDriverDto): Promise<Driver> {
+    return this.driverRepository.save(createDriverDto);
   }
 
   async remove(id: number): Promise<void> {
