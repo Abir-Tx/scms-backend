@@ -7,7 +7,6 @@ import { AuthModule } from './auth/auth.module';
 import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
-import { TypeormModule } from './typeorm/typeorm.module';
 
 @Module({
   imports: [
@@ -23,7 +22,6 @@ import { TypeormModule } from './typeorm/typeorm.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    TypeormModule,
   ],
   controllers: [AppController, UserController],
   providers: [AppService, UserService],

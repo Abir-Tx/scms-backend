@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, Matches } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, Matches } from 'class-validator';
 
 export class Userdto {
   @IsNotEmpty({ message: 'Name cannot be empty' })
@@ -6,22 +6,25 @@ export class Userdto {
   name: string;
   @IsNotEmpty({ message: 'username cannot be empty' })
   @IsString({ message: 'username must be string' })
-  @Matches(/^@.{2,5}$/, { message: 'username contains special character.' })
+  @Matches(/^@.{2,10}$/, { message: 'username contains special character.' })
   username: string;
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Email cannot be empty' })
+  @IsEmail()
+  email: string;
+  @IsNotEmpty({ message: 'password cannot be empty.' })
   @IsString()
-  @Matches(/^(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{4,10}$/)
+  @Matches(/^(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{4,60}$/, {
+    message:
+      'Password should contain capital letter, small letter, number & special char',
+  })
   password: string;
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Phone number cannot be empty.' })
   @IsString()
   phone: string;
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({ message: 'address cannot be empty.' })
+  @IsString({ message: 'address must be string' })
   address: string;
   @IsNotEmpty()
   @IsString()
   avater: string;
-  @IsNotEmpty()
-  @IsString()
-  role: string;
 }
