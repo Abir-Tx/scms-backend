@@ -1,6 +1,7 @@
 // shipment.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Transport } from './transport.entity'; // Assuming you have a transport entity
+import { Transport } from './transport.entity';
+import { Driver } from './driver.entity';
 
 @Entity()
 export class Shipment {
@@ -8,19 +9,29 @@ export class Shipment {
   id: number;
 
   @Column()
-  shipmentName: string;
+  status: string;
+
+  @Column({ type: 'date' })
+  shipmentDate: Date;
 
   @Column()
-  shippingDate: Date;
+  description: string;
 
   @Column()
-  expectedDeliveryDate: Date;
+  weight: number;
 
   @Column()
-  currentLocation: string;
+  destination: string;
+
+  @Column()
+  specialInstructions: string;
+
+  @Column({ type: 'date' })
+  estimatedArrivalDate: Date;
+
+  @ManyToOne(() => Driver, (driver) => driver.transports)
+  driver: Driver;
 
   @ManyToOne(() => Transport, (transport) => transport.shipments)
   transport: Transport;
-
-  // Add more fields as needed
 }
