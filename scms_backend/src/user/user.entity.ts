@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  Unique,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('user')
 @Unique(['username', 'email', 'phone'])
@@ -21,4 +28,8 @@ export class UserEntity {
   avater: string;
   @Column()
   role: string;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 }
