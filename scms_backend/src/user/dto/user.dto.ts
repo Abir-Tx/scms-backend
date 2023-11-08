@@ -24,7 +24,7 @@ export class Userdto {
   @IsNotEmpty({ message: 'address cannot be empty.' })
   @IsString({ message: 'address must be string' })
   address: string;
-  @IsNotEmpty()
-  @IsString()
+  // @IsNotEmpty()
+  // @IsString()
   avater: string;
 }

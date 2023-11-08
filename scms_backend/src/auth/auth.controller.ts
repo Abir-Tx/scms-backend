@@ -16,6 +16,11 @@ import { Userdto } from 'src/user/dto';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
+  @Get('signin')
+  signin() {
+    return { message: 'Hello world' };
+  }
+  @Post('signup')
   @UsePipes(new ValidationPipe())
   @UseInterceptors(
     FileInterceptor('avater', {
@@ -28,39 +33,67 @@ export class AuthController {
       },
       limits: { fileSize: 8000000 },
       storage: diskStorage({
-        destination: './upload',
+        destination: './upload/avater',
         filename: function (req, file, cb) {
           cb(null, Date.now() + file.originalname);
         },
       }),
     }),
   )
-  @Get('signin')
-  signin() {
-    return { message: 'Hello world' };
-  }
-  @Post('signup')
-  signUp(
-    @Body() dto: Userdto,
-    @UploadedFile() customerAvater: Express.Multer.File,
-  ) {
-    dto.avater = customerAvater.filename;
+  signUp(@Body() dto: Userdto, @UploadedFile() avater: Express.Multer.File) {
+    dto.avater = avater.filename;
     return this.authService.singUp(dto, 'customer');
   }
   @Post('seller/signup')
+  @UseInterceptors(
+    FileInterceptor('avater', {
+      fileFilter: (req, file, cb) => {
+        if (file.originalname.match(/^.*\.(jpg|webp|png|jpeg)$/))
+          cb(null, true);
+        else {
+          cb(new MulterError('LIMIT_UNEXPECTED_FILE', 'image'), false);
+        }
+      },
+      limits: { fileSize: 8000000 },
+      storage: diskStorage({
+        destination: './upload/avater',
+        filename: function (req, file, cb) {
+          cb(null, Date.now() + file.originalname);
+        },
+      }),
+    }),
+  )
   sellerSignUp(
     @Body() dto: Userdto,
-    @UploadedFile() sellerAvater: Express.Multer.File,
+    @UploadedFile() avater: Express.Multer.File,
   ) {
-    dto.avater = sellerAvater.filename;
+    dto.avater = avater.filename;
     return this.authService.singUp(dto, 'seller');
   }
   @Post('admin/signup')
+  @UseInterceptors(
+    FileInterceptor('avater', {
+      fileFilter: (req, file, cb) => {
+        if (file.originalname.match(/^.*\.(jpg|webp|png|jpeg)$/))
+          cb(null, true);
+        else {
+          cb(new MulterError('LIMIT_UNEXPECTED_FILE', 'image'), false);
+        }
+      },
+      limits: { fileSize: 8000000 },
+      storage: diskStorage({
+        destination: './upload/avater',
+        filename: function (req, file, cb) {
+          cb(null, Date.now() + file.originalname);
+        },
+      }),
+    }),
+  )
   adminSignUp(
     @Body() dto: Userdto,
-    @UploadedFile() adminAvater: Express.Multer.File,
+    @UploadedFile() avater: Express.Multer.File,
   ) {
-    dto.avater = adminAvater.filename;
+    dto.avater = avater.filename;
     return this.authService.singUp(dto, 'admin');
   }
 }
