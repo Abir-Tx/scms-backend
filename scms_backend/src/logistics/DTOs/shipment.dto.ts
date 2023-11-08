@@ -1,30 +1,33 @@
+import { Transform } from 'class-transformer';
 import { IsString, IsDate, IsNumber } from 'class-validator';
 
 export class CreateShipmentDto {
-  @IsString()
+  @IsString({ message: 'Status should be a string' })
   status: string;
 
-  @IsDate()
+  @Transform(({ value }) => new Date(value))
+  @IsDate({ message: 'Shipment date should be a valid date' })
   shipmentDate: Date;
 
-  @IsString()
+  @IsString({ message: 'Description should be a string' })
   description: string;
 
-  @IsNumber()
+  @IsNumber({}, { message: 'Weight should be a number' })
   weight: number;
 
-  @IsString()
+  @IsString({ message: 'Destination should be a string' })
   destination: string;
 
-  @IsString()
+  @IsString({ message: 'Special instructions should be a string' })
   specialInstructions: string;
 
-  @IsDate()
+  @Transform(({ value }) => new Date(value))
+  @IsDate({ message: 'Estimated arrival date should be a valid date' })
   estimatedArrivalDate: Date;
 
   @IsNumber()
-  driverId: number; // ID of the assigned driver
+  driverId: number;
 
   @IsNumber()
-  transportId: number; // ID of the associated transport
+  transportId: number;
 }
