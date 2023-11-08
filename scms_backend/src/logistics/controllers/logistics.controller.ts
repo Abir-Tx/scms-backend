@@ -19,6 +19,7 @@ import { TransportService } from '../services/transport.service';
 import { Transport } from '../entities/transport.entity';
 import { CreateDriverDto } from '../DTOs/driver.dto';
 import { ShipmentService } from '../services/shipment.service';
+import { CreateShipmentDto } from '../DTOs/shipment.dto';
 
 @Controller('logistics')
 export class LogisticsController {
@@ -198,5 +199,26 @@ export class LogisticsController {
   @Get('shipments')
   getAllShipments() {
     return this.sv.findAllShipments();
+  }
+
+  @Get('shipments/:id')
+  getShipmentById(@Param('id') id: string) {
+    return this.sv.findShipmentById(parseInt(id));
+  }
+
+  @Post('shipments')
+  @UsePipes(new ValidationPipe())
+  async addShipment(@Body() shipmentData) {
+    const newShipment = await this.sv.createShipment(shipmentData);
+    return newShipment;
+  }
+
+  @Put('shipments/:id')
+  @UsePipes(new ValidationPipe())
+  updateShipment(
+    @Param('id') id: string,
+    @Body() updatedShipmentData: CreateShipmentDto,
+  ) {
+    return this.sv.updateShipment(parseInt(id), updatedShipmentData);
   }
 }
