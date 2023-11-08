@@ -70,6 +70,16 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+### Test Using Curl
+
+Take any API route and use curl to test it. For example:
+
+```bash
+curl -X GET localhost:3000/logistics/shipments | jq .
+```
+
+> I have used `jq` to format the output. You need to install it first.
+
 ## License
 
 Nest is [MIT licensed](LICENSE).
