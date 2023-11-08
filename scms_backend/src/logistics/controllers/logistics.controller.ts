@@ -27,7 +27,7 @@ export class LogisticsController {
     private readonly driverService: DriverService,
     private readonly logisticsService: LogisticsService,
     private readonly transportService: TransportService,
-    private readonly sv: ShipmentService,
+    private readonly shipmentService: ShipmentService,
   ) {}
   @Get()
   getWelcome() {
@@ -198,18 +198,18 @@ export class LogisticsController {
   // Get All Shipments
   @Get('shipments')
   getAllShipments() {
-    return this.sv.findAllShipments();
+    return this.shipmentService.findAllShipments();
   }
 
   @Get('shipments/:id')
   getShipmentById(@Param('id') id: string) {
-    return this.sv.findShipmentById(parseInt(id));
+    return this.shipmentService.findShipmentById(parseInt(id));
   }
 
   @Post('shipments')
   @UsePipes(new ValidationPipe())
   async addShipment(@Body() shipmentData) {
-    const newShipment = await this.sv.createShipment(shipmentData);
+    const newShipment = await this.shipmentService.createShipment(shipmentData);
     return newShipment;
   }
 
@@ -219,6 +219,21 @@ export class LogisticsController {
     @Param('id') id: string,
     @Body() updatedShipmentData: CreateShipmentDto,
   ) {
-    return this.sv.updateShipment(parseInt(id), updatedShipmentData);
+    return this.shipmentService.updateShipment(
+      parseInt(id),
+      updatedShipmentData,
+    );
+  }
+
+  @Delete('shipments/:id')
+  deleteShipment(@Param('id') id: string, @Res() response) {
+    try {
+      this.shipmentService.deleteShipment(parseInt(id));
+      response.status(200).json({ message: 'Shipment successfully deleted' });
+    } catch (error) {
+      response
+        .status(500)
+        .json({ message: error.message || 'Something went wrong' });
+    }
   }
 }
