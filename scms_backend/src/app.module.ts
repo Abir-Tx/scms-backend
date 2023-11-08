@@ -7,6 +7,9 @@ import { AuthModule } from './auth/auth.module';
 import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
+import { ProductService } from './product/product.service';
+import { ProductController } from './product/product.controller';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -22,8 +25,9 @@ import { UserService } from './user/user.service';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    ProductModule,
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, UserService],
+  controllers: [AppController, UserController, ProductController],
+  providers: [AppService, UserService, ProductService],
 })
 export class AppModule {}

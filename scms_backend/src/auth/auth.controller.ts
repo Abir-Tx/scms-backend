@@ -45,6 +45,7 @@ export class AuthController {
     return this.authService.singUp(dto, 'customer');
   }
   @Post('seller/signup')
+  @UsePipes(new ValidationPipe())
   @UseInterceptors(
     FileInterceptor('avater', {
       fileFilter: (req, file, cb) => {
@@ -71,6 +72,7 @@ export class AuthController {
     return this.authService.singUp(dto, 'seller');
   }
   @Post('admin/signup')
+  @UsePipes(new ValidationPipe())
   @UseInterceptors(
     FileInterceptor('avater', {
       fileFilter: (req, file, cb) => {
