@@ -199,6 +199,12 @@ export class LogisticsController {
     }
   }
 
+  // Get all shipments for a transport
+  @Get('transports/:id/shipments')
+  getShipmentsForTransport(@Param('id') id: string) {
+    return this.shipmentService.getShipmentsForTransport(parseInt(id));
+  }
+
   // ---------------------------- Shipments -----------------------------
 
   // Get All Shipments
@@ -247,5 +253,11 @@ export class LogisticsController {
   @Get('shipments/:id/driver')
   getDriverForShipment(@Param('id') id: string) {
     return this.shipmentService.getDriverForShipment(parseInt(id));
+  }
+
+  // Get transport details for shipment
+  @Get('shipments/:id/transport')
+  getTransportForShipment(@Param('id') id: string) {
+    return this.shipmentService.getTransportForShipment(parseInt(id));
   }
 }
