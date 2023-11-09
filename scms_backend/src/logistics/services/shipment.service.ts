@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Shipment } from '../entities/shipment.entity';
 import { CreateShipmentDto } from '../DTOs/shipment.dto';
+import { Driver } from '../entities/driver.entity';
 
 @Injectable()
 export class ShipmentService {
@@ -44,5 +45,12 @@ export class ShipmentService {
   async deleteShipment(id: number): Promise<void> {
     const shipment = await this.findShipmentById(id);
     await this.shipmentRepository.remove(shipment);
+  }
+
+  async getShipmentsForDriver(id: number): Promise<Shipment[]> {
+    const shipments = await this.shipmentRepository.find({
+      where: { driver: { id: id } },
+    });
+    return shipments;
   }
 }
