@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Shipment } from '../entities/shipment.entity';
 import { CreateShipmentDto } from '../DTOs/shipment.dto';
 import { Driver } from '../entities/driver.entity';
+import { Transport } from '../entities/transport.entity';
 
 @Injectable()
 export class ShipmentService {
@@ -61,5 +62,22 @@ export class ShipmentService {
       relations: ['driver'],
     });
     return shipment.driver;
+  }
+
+  // Get transport details for shipment
+  async getTransportForShipment(id: number): Promise<Transport> {
+    const shipment = await this.shipmentRepository.findOne({
+      where: { id: id },
+      relations: ['transport'],
+    });
+    return shipment.transport;
+  }
+
+  // Return all shipments for a transport
+  async getShipmentsForTransport(id: number): Promise<Shipment[]> {
+    const shipments = await this.shipmentRepository.find({
+      where: { transport: { id: id } },
+    });
+    return shipments;
   }
 }
