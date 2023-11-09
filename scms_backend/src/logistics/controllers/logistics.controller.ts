@@ -242,4 +242,10 @@ export class LogisticsController {
         .json({ message: error.message || 'Something went wrong' });
     }
   }
+
+  // Get driver details for shipment
+  @Get('shipments/:id/driver')
+  getDriverForShipment(@Param('id') id: string) {
+    return this.shipmentService.getDriverForShipment(parseInt(id));
+  }
 }
