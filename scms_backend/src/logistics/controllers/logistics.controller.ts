@@ -141,6 +141,12 @@ export class LogisticsController {
     );
   }
 
+  // Get all shipments for a driver
+  @Get('drivers/:id/shipments')
+  getShipmentsForDriver(@Param('id') id: string) {
+    return this.shipmentService.getShipmentsForDriver(parseInt(id));
+  }
+
   // ---------------------------- Transports -----------------------------
   /**
    * This file implements the following API routes:
