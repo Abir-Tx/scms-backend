@@ -53,4 +53,13 @@ export class ShipmentService {
     });
     return shipments;
   }
+
+  // Get driver details for shipment
+  async getDriverForShipment(id: number): Promise<Driver> {
+    const shipment = await this.shipmentRepository.findOne({
+      where: { id: id },
+      relations: ['driver'],
+    });
+    return shipment.driver;
+  }
 }
