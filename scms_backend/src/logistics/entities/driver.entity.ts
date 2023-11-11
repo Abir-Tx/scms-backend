@@ -26,6 +26,9 @@ export class Driver {
   email: string;
 
   @Column()
+  password: string;
+
+  @Column()
   vehicleId: number; // If drivers are assigned specific vehicles
 
   @Column()
