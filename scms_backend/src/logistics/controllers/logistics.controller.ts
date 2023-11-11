@@ -11,6 +11,10 @@ import {
   Query,
   UsePipes,
   ValidationPipe,
+  UseInterceptors,
+  UploadedFile,
+  HttpStatus,
+  HttpException,
 } from '@nestjs/common';
 import { LogisticsService } from '../services/logistics.service';
 import { DriverService } from '../services/driver.service';
@@ -20,6 +24,10 @@ import { Transport } from '../entities/transport.entity';
 import { CreateDriverDto } from '../DTOs/driver.dto';
 import { ShipmentService } from '../services/shipment.service';
 import { CreateShipmentDto } from '../DTOs/shipment.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { existsSync, mkdirSync } from 'fs';
+import { extname } from 'path';
 
 @Controller('logistics')
 export class LogisticsController {
@@ -145,6 +153,54 @@ export class LogisticsController {
   @Get('drivers/:id/shipments')
   getShipmentsForDriver(@Param('id') id: string) {
     return this.shipmentService.getShipmentsForDriver(parseInt(id));
+  }
+
+  // Upload a profile picture for a driver
+  @Post('drivers/:id/upload-propic')
+  @UseInterceptors(
+    FileInterceptor('photo', {
+      fileFilter: (req, file, cb) => {
+        if (
+          file.mimetype.match(/\/(jpg|jpeg|png|gif)$/i) &&
+          file.fieldname === 'photo'
+        ) {
+          cb(null, true);
+        } else {
+          cb(new Error('Invalid file type'), false);
+        }
+      },
+      limits: { fileSize: 30000 },
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          const driverId = req.params.id;
+          const uploadPath = `uploads/logistics/drivers/${driverId}`;
+
+          // Check if the directory exists, if not, create it
+          if (!existsSync(uploadPath)) {
+            mkdirSync(uploadPath, { recursive: true });
+          }
+          cb(null, uploadPath);
+        },
+        filename: (req, file, cb) => {
+          const randomName = Array(32)
+            .fill(null)
+            .map(() => Math.round(Math.random() * 16).toString(16))
+            .join('');
+          cb(null, `${randomName}${extname(file.originalname)}`);
+        },
+      }),
+    }),
+  )
+  async uploadPhoto(@Param('id') id: number, @UploadedFile() photo) {
+    const driver = await this.driverService.findById(id);
+    if (!driver) {
+      throw new HttpException('Driver not found', HttpStatus.NOT_FOUND);
+    }
+
+    driver.photo = photo.path;
+    await this.driverService.update(id, driver);
+
+    return { message: `Photo uploaded successfully for driver with id ${id}` };
   }
 
   // ---------------------------- Transports -----------------------------
