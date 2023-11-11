@@ -16,6 +16,7 @@ import {
   HttpStatus,
   HttpException,
   Session,
+  UseGuards,
 } from '@nestjs/common';
 import { LogisticsService } from '../services/logistics.service';
 import { DriverService } from '../services/driver.service';
@@ -28,6 +29,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { existsSync, mkdirSync } from 'fs';
 import { extname } from 'path';
+import { SessionGuard } from '../guards/driver.guards';
 
 @Controller('logistics')
 export class LogisticsController {
@@ -104,6 +106,7 @@ export class LogisticsController {
   }
 
   @Post('drivers')
+  @UseGuards(SessionGuard)
   @UsePipes(new ValidationPipe())
   async addDriver(@Body() driverDto: CreateDriverDto) {
     const newDriver = await this.driverService.create(driverDto);
@@ -111,6 +114,7 @@ export class LogisticsController {
   }
 
   @Delete('drivers/:id')
+  @UseGuards(SessionGuard)
   async deleteDriver(@Param('id') id: string, @Res() response) {
     try {
       await this.driverService.remove(parseInt(id));
@@ -123,6 +127,7 @@ export class LogisticsController {
   }
 
   @Put('drivers/:id')
+  @UseGuards(SessionGuard)
   @UsePipes(new ValidationPipe())
   updateDriver(
     @Param('id') id: string,
@@ -146,6 +151,7 @@ export class LogisticsController {
 
   // An API route to assign a transport to a driver
   @Post('drivers/:driverId/transports/:transportId')
+  @UseGuards(SessionGuard)
   assignTransportToDriver(
     @Param('driverId') driverId: string,
     @Param('transportId') transportId: string,
@@ -158,6 +164,7 @@ export class LogisticsController {
 
   // An API route to unassign a transport from a driver
   @Delete('drivers/:driverId/transports/:transportId')
+  @UseGuards(SessionGuard)
   unassignTransportFromDriver(
     @Param('driverId') driverId: string,
     @Param('transportId') transportId: string,
@@ -170,12 +177,14 @@ export class LogisticsController {
 
   // Get all shipments for a driver
   @Get('drivers/:id/shipments')
+  @UseGuards(SessionGuard)
   getShipmentsForDriver(@Param('id') id: string) {
     return this.shipmentService.getShipmentsForDriver(parseInt(id));
   }
 
   // Upload a profile picture for a driver
   @Post('drivers/:id/upload-propic')
+  @UseGuards(SessionGuard)
   @UseInterceptors(
     FileInterceptor('photo', {
       fileFilter: (req, file, cb) => {
@@ -224,7 +233,10 @@ export class LogisticsController {
 
   // Login
   @Post('drivers/login')
-  async login(@Body() driverLoginDto: DriverLoginDto, @Session() session) {
+  async login(
+    @Body() driverLoginDto: DriverLoginDto,
+    @Session() driverSession,
+  ) {
     const driver = await this.driverService.findByEmail(driverLoginDto.email);
 
     if (!driver) {
@@ -233,7 +245,7 @@ export class LogisticsController {
       const result = await this.driverService.login(driverLoginDto);
 
       if (result) {
-        session.email = driverLoginDto.email;
+        driverSession.email = driverLoginDto.email;
         return {
           message: 'Login successful. Your session has been saved',
           driverId: driver.id,
@@ -247,8 +259,8 @@ export class LogisticsController {
   // Logout
   @Post('drivers/logout')
   logout(@Session() driverSession) {
-    if (driverSession.driverEmail) {
-      driverSession.driverEmail = null;
+    if (driverSession.email) {
+      driverSession.email = null;
       return { message: 'Logout successful' };
     } else {
       throw new HttpException('You are not logged in', HttpStatus.UNAUTHORIZED);
@@ -267,11 +279,13 @@ export class LogisticsController {
    */
 
   @Get('transports')
+  @UseGuards(SessionGuard)
   getTransports() {
     return this.transportService.getAllTransports();
   }
 
   @Post('transports')
+  @UseGuards(SessionGuard)
   async addTransport(@Body() transportData) {
     const newTransport =
       await this.transportService.createTransport(transportData);
@@ -280,12 +294,14 @@ export class LogisticsController {
 
   // Get a transport by ID
   @Get('transports/:id')
+  @UseGuards(SessionGuard)
   getTransportById(@Param('id') id: string) {
     return this.transportService.getTransportById(parseInt(id));
   }
 
   // Update a transport details
   @Put('transports/:id')
+  @UseGuards(SessionGuard)
   updateTransport(
     @Param('id') id: string,
     @Body() updatedTransportData: Partial<Transport>,
@@ -298,6 +314,7 @@ export class LogisticsController {
 
   // Delete a transport
   @Delete('transports/:id')
+  @UseGuards(SessionGuard)
   deleteTransport(@Param('id') id: string, @Res() response) {
     try {
       this.transportService.deleteTransport(parseInt(id));
@@ -311,6 +328,7 @@ export class LogisticsController {
 
   // Get all shipments for a transport
   @Get('transports/:id/shipments')
+  @UseGuards(SessionGuard)
   getShipmentsForTransport(@Param('id') id: string) {
     return this.shipmentService.getShipmentsForTransport(parseInt(id));
   }
@@ -332,16 +350,19 @@ export class LogisticsController {
 
   // Get All Shipments
   @Get('shipments')
+  @UseGuards(SessionGuard)
   getAllShipments() {
     return this.shipmentService.findAllShipments();
   }
 
   @Get('shipments/:id')
+  @UseGuards(SessionGuard)
   getShipmentById(@Param('id') id: string) {
     return this.shipmentService.findShipmentById(parseInt(id));
   }
 
   @Post('shipments')
+  @UseGuards(SessionGuard)
   @UsePipes(new ValidationPipe())
   async addShipment(@Body() shipmentData) {
     const newShipment = await this.shipmentService.createShipment(shipmentData);
@@ -349,6 +370,7 @@ export class LogisticsController {
   }
 
   @Put('shipments/:id')
+  @UseGuards(SessionGuard)
   @UsePipes(new ValidationPipe())
   updateShipment(
     @Param('id') id: string,
@@ -361,6 +383,7 @@ export class LogisticsController {
   }
 
   @Delete('shipments/:id')
+  @UseGuards(SessionGuard)
   deleteShipment(@Param('id') id: string, @Res() response) {
     try {
       this.shipmentService.deleteShipment(parseInt(id));
@@ -374,12 +397,14 @@ export class LogisticsController {
 
   // Get driver details for shipment
   @Get('shipments/:id/driver')
+  @UseGuards(SessionGuard)
   getDriverForShipment(@Param('id') id: string) {
     return this.shipmentService.getDriverForShipment(parseInt(id));
   }
 
-  // Get transport details for shipment
+  // Get transport details for shipmen
   @Get('shipments/:id/transport')
+  @UseGuards(SessionGuard)
   getTransportForShipment(@Param('id') id: string) {
     return this.shipmentService.getTransportForShipment(parseInt(id));
   }
