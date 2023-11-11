@@ -53,7 +53,7 @@ export class DriverService {
   // Update Driver
   async update(
     id: number,
-    updatedDriverData: Partial<Driver>,
+    updatedDriverData: CreateDriverDto,
   ): Promise<Driver> {
     const existingDriver = await this.driverRepository.findOne({
       where: { id: id },
@@ -81,6 +81,9 @@ export class DriverService {
     }
     if (updatedDriverData.email) {
       existingDriver.email = updatedDriverData.email;
+    }
+    if (updatedDriverData.password) {
+      existingDriver.password = updatedDriverData.password;
     }
     if (updatedDriverData.vehicleId !== undefined) {
       existingDriver.vehicleId = updatedDriverData.vehicleId;

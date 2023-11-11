@@ -114,7 +114,11 @@ export class LogisticsController {
   }
 
   @Put('drivers/:id')
-  updateDriver(@Param('id') id: string, @Body() updatedDriverData: Driver) {
+  @UsePipes(new ValidationPipe())
+  updateDriver(
+    @Param('id') id: string,
+    @Body() updatedDriverData: CreateDriverDto,
+  ) {
     try {
       const updatedDriver = this.driverService.update(
         parseInt(id),
