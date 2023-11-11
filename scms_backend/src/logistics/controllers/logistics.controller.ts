@@ -15,10 +15,10 @@ import {
   UploadedFile,
   HttpStatus,
   HttpException,
+  Session,
 } from '@nestjs/common';
 import { LogisticsService } from '../services/logistics.service';
 import { DriverService } from '../services/driver.service';
-import { Driver } from '../entities/driver.entity';
 import { TransportService } from '../services/transport.service';
 import { Transport } from '../entities/transport.entity';
 import { CreateDriverDto, DriverLoginDto } from '../DTOs/driver.dto';
@@ -49,6 +49,7 @@ export class LogisticsController {
    * GET /drivers - Retrieves all drivers
    * GET /drivers/:id - Retrieves a driver by its ID
    * GET /drivers/name/:name - Retrieves a driver by its name
+   * GET /drivers/email/:email - Retrieves a driver by its email
    * POST /drivers - Creates a new driver
    * PUT /drivers/:id - Updates a driver by its ID
    * DELETE /drivers/:id - Deletes a driver by its ID
@@ -57,6 +58,7 @@ export class LogisticsController {
    * DELETE /drivers/:driverId/transports/:transportId - Unassigns a transport from a driver
    * GET /drivers/:id/shipments - Retrieves all shipments for a driver
    * POST /drivers/:id/upload-propic - Uploads a profile picture for a driver
+   * POST /drivers/login - Login for drivers
    *
    */
 
@@ -90,6 +92,13 @@ export class LogisticsController {
       name,
       shouldPerformCaseSensitiveSearch,
     );
+
+    return driver;
+  }
+
+  @Get('drivers/email/:email')
+  getDriverByEmail(@Param('email') email: string) {
+    const driver = this.driverService.findByEmail(email);
 
     return driver;
   }
@@ -215,7 +224,7 @@ export class LogisticsController {
 
   // Login
   @Post('drivers/login')
-  async login(@Body() driverLoginDto: DriverLoginDto) {
+  async login(@Body() driverLoginDto: DriverLoginDto, @Session() session) {
     const driver = await this.driverService.findByEmail(driverLoginDto.email);
 
     if (!driver) {
@@ -224,13 +233,25 @@ export class LogisticsController {
       const result = await this.driverService.login(driverLoginDto);
 
       if (result) {
+        session.email = driverLoginDto.email;
         return {
-          message: 'Login successful',
+          message: 'Login successful. Your session has been saved',
           driverId: driver.id,
         };
       } else {
         throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
       }
+    }
+  }
+
+  // Logout
+  @Post('drivers/logout')
+  logout(@Session() driverSession) {
+    if (driverSession.driverEmail) {
+      driverSession.driverEmail = null;
+      return { message: 'Logout successful' };
+    } else {
+      throw new HttpException('You are not logged in', HttpStatus.UNAUTHORIZED);
     }
   }
 
