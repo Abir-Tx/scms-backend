@@ -46,12 +46,18 @@ export class LogisticsController {
   /**
    * This file implements the following API routes for drivers:
    *
+   * GET /drivers - Retrieves all drivers
    * GET /drivers/:id - Retrieves a driver by its ID
-   * GET /drivers/name/:name - Retrieves a driver by its name, with an optional case sensitivity flag
-   * POST /drivers - Adds a new driver
-   * DELETE /drivers/:id - Deletes a driver by its ID
+   * GET /drivers/name/:name - Retrieves a driver by its name
+   * POST /drivers - Creates a new driver
    * PUT /drivers/:id - Updates a driver by its ID
-   * GET /drivers/:id/transports - Retrieves all transports assigned to a driver by the driver's ID
+   * DELETE /drivers/:id - Deletes a driver by its ID
+   * GET /drivers/:id/transports - Retrieves all transports for a driver
+   * POST /drivers/:driverId/transports/:transportId - Assigns a transport to a driver
+   * DELETE /drivers/:driverId/transports/:transportId - Unassigns a transport from a driver
+   * GET /drivers/:id/shipments - Retrieves all shipments for a driver
+   * POST /drivers/:id/upload-propic - Uploads a profile picture for a driver
+   *
    */
 
   @Get('drivers')
