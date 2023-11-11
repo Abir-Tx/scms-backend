@@ -61,6 +61,7 @@ export class LogisticsController {
    * GET /drivers/:id/shipments - Retrieves all shipments for a driver
    * POST /drivers/:id/upload-propic - Uploads a profile picture for a driver
    * POST /drivers/login - Login for drivers
+   * POST /drivers/logout - Logout for drivers
    *
    */
 
