@@ -216,6 +216,8 @@ export class LogisticsController {
    * GET /transports/:id - Retrieves a transport by its ID
    * PUT /transports/:id - Updates a transport by its ID
    * DELETE /transports/:id - Deletes a transport by its ID
+   * GET /transports/:id/shipments - Retrieves all shipments for a transport
+   *
    */
 
   @Get('transports')
@@ -268,6 +270,19 @@ export class LogisticsController {
   }
 
   // ---------------------------- Shipments -----------------------------
+
+  /**
+   * This file implements the following API routes:
+   *
+   * GET /shipments - Retrieves all shipments
+   * GET /shipments/:id - Retrieves a shipment by its ID
+   * POST /shipments - Creates a new shipment
+   * PUT /shipments/:id - Updates a shipment by its ID
+   * DELETE /shipments/:id - Deletes a shipment by its ID
+   * GET /shipments/:id/driver - Retrieves the driver for a shipment
+   * GET /shipments/:id/transport - Retrieves the transport for a shipment
+   *
+   */
 
   // Get All Shipments
   @Get('shipments')
