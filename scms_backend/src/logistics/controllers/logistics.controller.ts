@@ -169,7 +169,7 @@ export class LogisticsController {
           cb(new Error('Invalid file type'), false);
         }
       },
-      limits: { fileSize: 30000 },
+      limits: { fileSize: 5000000 }, // 5MB
       storage: diskStorage({
         destination: (req, file, cb) => {
           const driverId = req.params.id;
