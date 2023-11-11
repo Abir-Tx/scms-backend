@@ -4,8 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Driver } from '../entities/driver.entity';
 import { Transport } from '../entities/transport.entity';
-import { CreateDriverDto } from '../DTOs/driver.dto';
-
+import { CreateDriverDto, DriverLoginDto } from '../DTOs/driver.dto';
 @Injectable()
 export class DriverService {
   constructor(
@@ -35,6 +34,20 @@ export class DriverService {
       return this.driverRepository
         .createQueryBuilder('driver')
         .where('LOWER(driver.name) = LOWER(:name)', { name: name })
+        .getOne();
+    }
+  }
+
+  // Find driver by email
+  async findByEmail(email: string, caseSensitive = false): Promise<Driver> {
+    if (caseSensitive) {
+      return this.driverRepository.findOne({
+        where: { email: email },
+      });
+    } else {
+      return this.driverRepository
+        .createQueryBuilder('driver')
+        .where('LOWER(driver.email) = LOWER(:email)', { email: email })
         .getOne();
     }
   }
@@ -178,5 +191,24 @@ export class DriverService {
     await this.driverRepository.save(driver);
 
     return driver;
+  }
+
+  // ------------------- Login -------------------
+
+  // Login
+  async login(driverLoginDto: DriverLoginDto) {
+    const driver = await this.driverRepository.findOne({
+      where: { email: driverLoginDto.email },
+    });
+
+    if (!driver) {
+      throw new HttpException('Driver not found', HttpStatus.NOT_FOUND);
+    } else {
+      const isPasswordMatching =
+        driverLoginDto.password === driver.password ? true : false;
+
+      if (isPasswordMatching) return true;
+      else return false;
+    }
   }
 }

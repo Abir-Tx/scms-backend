@@ -21,7 +21,7 @@ import { DriverService } from '../services/driver.service';
 import { Driver } from '../entities/driver.entity';
 import { TransportService } from '../services/transport.service';
 import { Transport } from '../entities/transport.entity';
-import { CreateDriverDto } from '../DTOs/driver.dto';
+import { CreateDriverDto, DriverLoginDto } from '../DTOs/driver.dto';
 import { ShipmentService } from '../services/shipment.service';
 import { CreateShipmentDto } from '../DTOs/shipment.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -211,6 +211,27 @@ export class LogisticsController {
     await this.driverService.update(id, driver);
 
     return { message: `Photo uploaded successfully for driver with id ${id}` };
+  }
+
+  // Login
+  @Post('drivers/login')
+  async login(@Body() driverLoginDto: DriverLoginDto) {
+    const driver = await this.driverService.findByEmail(driverLoginDto.email);
+
+    if (!driver) {
+      throw new HttpException('Driver not found', HttpStatus.NOT_FOUND);
+    } else {
+      const result = await this.driverService.login(driverLoginDto);
+
+      if (result) {
+        return {
+          message: 'Login successful',
+          driverId: driver.id,
+        };
+      } else {
+        throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+      }
+    }
   }
 
   // ---------------------------- Transports -----------------------------
