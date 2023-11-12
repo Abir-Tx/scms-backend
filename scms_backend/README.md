@@ -4,6 +4,10 @@
 
 The project targets to create a REST API for a Smart **Supply Chain Management System**. The API is built using NestJS and PostgreSQL.
 
+## Documentation
+
+[Click Here](https://documenter.getpostman.com/view/21420955/2s9YXk3gYw) to view the full API Documentation
+
 ## Installation
 
 ```bash
