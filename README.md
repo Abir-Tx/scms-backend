@@ -1,2 +1,6 @@
-# supply_chain_management_system
-Smart supply chain management system for Bangladesh specifically
+# SCMS 
+
+Smart supply chain management system for Bangladesh specifically. The project includes:
+
+- API Backend in NESTJS
+- Frontend in NEXTJS
