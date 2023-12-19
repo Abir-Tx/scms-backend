@@ -12,6 +12,12 @@ async function bootstrap() {
       cookie: { maxAge: 1000 * 60 * 60 },
     }),
   );
+
+  app.enableCors({
+    allowedHeaders: '*',
+    origin: '*',
+    credentials: true,
+  });
   await app.listen(3000);
 }
 bootstrap();
