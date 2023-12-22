@@ -75,4 +75,10 @@ export class TransportService {
       throw new HttpException('Transport not found', HttpStatus.NOT_FOUND);
     }
   }
+
+  // get the total number of transports
+  async getTransportCount(): Promise<number> {
+    const count = await this.transportRepository.count();
+    return count;
+  }
 }

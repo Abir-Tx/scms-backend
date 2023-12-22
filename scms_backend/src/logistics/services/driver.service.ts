@@ -211,4 +211,11 @@ export class DriverService {
       else return false;
     }
   }
+
+  // ------------------- End of Login -------------------
+
+  // Get total number of drivers in the database
+  async getTotalNumberOfDrivers(): Promise<number> {
+    return await this.driverRepository.count();
+  }
 }
