@@ -268,13 +268,6 @@ export class LogisticsController {
     }
   }
 
-  // Get total registered drivers
-  @Get('drivers/total')
-  // @UseGuards(SessionGuard)
-  getTotalDrivers() {
-    return this.driverService.getTotalNumberOfDrivers();
-  }
-
   // ---------------------------- Transports -----------------------------
   /**
    * This file implements the following API routes:
@@ -339,13 +332,6 @@ export class LogisticsController {
   @UseGuards(SessionGuard)
   getShipmentsForTransport(@Param('id') id: string) {
     return this.shipmentService.getShipmentsForTransport(parseInt(id));
-  }
-
-  // Get total registered transports
-  @Get('transports/total')
-  // @UseGuards(SessionGuard)
-  getTotalTransports() {
-    return this.transportService.getTransportCount();
   }
 
   // ---------------------------- Shipments -----------------------------
