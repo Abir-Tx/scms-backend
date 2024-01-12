@@ -107,7 +107,7 @@ export class LogisticsController {
   }
 
   @Post('drivers')
-  @UseGuards(SessionGuard)
+  // @UseGuards(SessionGuard)
   @UsePipes(new ValidationPipe())
   async addDriver(@Body() driverDto: CreateDriverDto) {
     const newDriver = await this.driverService.create(driverDto);
@@ -115,7 +115,7 @@ export class LogisticsController {
   }
 
   @Delete('drivers/:id')
-  @UseGuards(SessionGuard)
+  //  @UseGuards(SessionGuard)
   async deleteDriver(@Param('id') id: string, @Res() response) {
     try {
       await this.driverService.remove(parseInt(id));
@@ -128,7 +128,7 @@ export class LogisticsController {
   }
 
   @Put('drivers/:id')
-  @UseGuards(SessionGuard)
+  //  @UseGuards(SessionGuard)
   @UsePipes(new ValidationPipe())
   updateDriver(
     @Param('id') id: string,
@@ -280,13 +280,13 @@ export class LogisticsController {
    */
 
   @Get('transports')
-  @UseGuards(SessionGuard)
+  // @UseGuards(SessionGuard)
   getTransports() {
     return this.transportService.getAllTransports();
   }
 
   @Post('transports')
-  @UseGuards(SessionGuard)
+  //  @UseGuards(SessionGuard)
   async addTransport(@Body() transportData) {
     const newTransport =
       await this.transportService.createTransport(transportData);
@@ -351,7 +351,7 @@ export class LogisticsController {
 
   // Get All Shipments
   @Get('shipments')
-  @UseGuards(SessionGuard)
+  // @UseGuards(SessionGuard)
   getAllShipments() {
     return this.shipmentService.findAllShipments();
   }
@@ -363,7 +363,7 @@ export class LogisticsController {
   }
 
   @Post('shipments')
-  @UseGuards(SessionGuard)
+  //  @UseGuards(SessionGuard)
   @UsePipes(new ValidationPipe())
   async addShipment(@Body() shipmentData) {
     const newShipment = await this.shipmentService.createShipment(shipmentData);
@@ -384,7 +384,7 @@ export class LogisticsController {
   }
 
   @Delete('shipments/:id')
-  @UseGuards(SessionGuard)
+  // @UseGuards(SessionGuard)
   deleteShipment(@Param('id') id: string, @Res() response) {
     try {
       this.shipmentService.deleteShipment(parseInt(id));
