@@ -6,10 +6,6 @@ Smart supply chain management system for Bangladesh specifically. The project in
 - Frontend in NEXTJS
 - Database using **Postgres**
 
-## API Documentation
-
-[Click Here](https://documenter.getpostman.com/view/21420955/2s9YXk3gYw) for full API documentation
-
 ## Description
 
 The project targets to create a REST API for a Smart **Supply Chain Management System**. The API is built using NestJS and PostgreSQL.
