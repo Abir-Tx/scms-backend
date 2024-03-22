@@ -61,6 +61,12 @@ PG_PASSWORD=WRITE_HERE
 PG_DATABASE=WRITE_HERE
 ```
 
+### Database UML Diagram
+
+![SCMS-Database-Diagram](https://github.com/Abir-Tx/scms-backend/assets/28858998/40eaf309-59cb-49e9-ade1-db0c24335f54)
+
+
+
 ## Test
 
 ```bash
